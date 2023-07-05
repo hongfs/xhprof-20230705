@@ -268,6 +268,10 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
 
   // Generate all nodes' information.
   foreach ($sym_table as $symbol => $info) {
+    if(!isset($info['ct'])) {
+      $info['ct'] = '';
+    }
+
     if ($info["excl_wt"] == 0) {
       $sizing_factor = $max_sizing_ratio;
     } else {
@@ -349,6 +353,10 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
 
   // Generate all the edges' information.
   foreach ($raw_data as $parent_child => $info) {
+    if(!isset($info['ct'])) {
+      $info['ct'] = '';
+    }
+
     list($parent, $child) = xhprof_parse_parent_child($parent_child);
 
     if (isset($sym_table[$parent]) && isset($sym_table[$child]) &&

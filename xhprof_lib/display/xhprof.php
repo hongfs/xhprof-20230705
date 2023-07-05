@@ -398,8 +398,8 @@ function sort_cbk($a, $b) {
   } else {
 
     // descending sort for all others
-    $left = $a[$sort_col];
-    $right = $b[$sort_col];
+    $left = $a[$sort_col] ?? 0;
+    $right = $b[$sort_col] ?? 0;
 
     // if diff mode, sort by absolute value of regression/improvement
     if ($diff_mode) {

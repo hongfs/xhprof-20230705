@@ -1160,7 +1160,7 @@ function symbol_report($url_params,
 
   foreach ($pc_stats as $stat) {
     $desc = stat_description($stat);
-    if (array_key_exists($stat, $sortable_columns)) {
+    if (!empty($stat) && !empty($sortable_columns) && array_key_exists($stat, $sortable_columns)) {
 
       $href = "$base_url?" .
         http_build_query(xhprof_array_set($url_params,

@@ -684,24 +684,24 @@ function print_function_info($url_params, $info, $sort, $run1, $run2) {
 
   if ($display_calls) {
     // Call Count..
-    print_td_num($info["ct"], $format_cbk["ct"], ($sort_col == "ct"));
-    print_td_pct($info["ct"], $totals["ct"], ($sort_col == "ct"));
+    print_td_num($info["ct"] ?? 0, $format_cbk["ct"] ?? null, ($sort_col == "ct"));
+    print_td_pct($info["ct"] ?? 0, $totals["ct"] ?? null, ($sort_col == "ct"));
   }
 
   // Other metrics..
   foreach ($metrics as $metric) {
     // Inclusive metric
-    print_td_num($info[$metric], $format_cbk[$metric],
+    print_td_num($info[$metric]??0, $format_cbk[$metric]??null,
                  ($sort_col == $metric));
-    print_td_pct($info[$metric], $totals[$metric],
+    print_td_pct($info[$metric]??0, $totals[$metric]??null,
                  ($sort_col == $metric));
 
     // Exclusive Metric
-    print_td_num($info["excl_" . $metric],
-                 $format_cbk["excl_" . $metric],
+    print_td_num($info["excl_" . $metric]??0,
+                 $format_cbk["excl_" . $metric]??null,
                  ($sort_col == "excl_" . $metric));
-    print_td_pct($info["excl_" . $metric],
-                 $totals[$metric],
+    print_td_pct($info["excl_" . $metric]??0,
+                 $totals[$metric]??null,
                  ($sort_col == "excl_" . $metric));
   }
 
@@ -877,7 +877,7 @@ function full_report($url_params, $symbol_tab, $sort, $run1, $run2) {
 
   print("<center><br><h3>" .
         xhprof_render_link($callgraph_report_title,
-                    "$base_path/callgraph.php" . "?" . http_build_query($url_params))
+                    "$base_path/xhprof/callgraph" . "?" . http_build_query($url_params))
         . "</h3></center>");
 
 
@@ -898,8 +898,6 @@ function full_report($url_params, $symbol_tab, $sort, $run1, $run2) {
     $all = false;
     $limit = 100;  // display only limited number of rows
   }
-
-  var_dump($descriptions);
 
   $desc = str_replace("<br>", " ", $descriptions[$sort_col] ?? '');
 
@@ -1147,7 +1145,7 @@ function symbol_report($url_params,
   print("<br><h4><center>");
   print("Parent/Child $regr_impr report for <b>$rep_symbol</b>");
 
-  $callgraph_href = "$base_path/callgraph.php?"
+  $callgraph_href = "$base_path/xhprof/callgraph?"
     . http_build_query(xhprof_array_set($url_params, 'func', $rep_symbol));
 
   print(" <a href='$callgraph_href'>[View Callgraph $diff_text]</a><br>");

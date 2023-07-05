@@ -426,9 +426,9 @@ function stat_description($stat) {
   global $diff_mode;
 
   if ($diff_mode) {
-    return $diff_descriptions[$stat];
+    return $diff_descriptions[$stat] ?? '';
   } else {
-    return $descriptions[$stat];
+    return $descriptions[$stat] ?? '';
   }
 }
 

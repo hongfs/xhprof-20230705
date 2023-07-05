@@ -899,7 +899,9 @@ function full_report($url_params, $symbol_tab, $sort, $run1, $run2) {
     $limit = 100;  // display only limited number of rows
   }
 
-  $desc = str_replace("<br>", " ", $descriptions[$sort_col]);
+  var_dump($description);
+
+  $desc = str_replace("<br>", " ", $descriptions[$sort_col] ?? '');
 
   if ($diff_mode) {
     if ($all) {

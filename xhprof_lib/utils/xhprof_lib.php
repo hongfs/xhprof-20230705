@@ -88,7 +88,7 @@ function init_metrics($xhprof_data, $rep_symbol, $sort, $diff_report = false) {
 
   // parent/child report doesn't support exclusive times yet.
   // So, change sort hyperlinks to closest fit.
-  if (!empty($rep_symbol)) {
+  if (!empty($rep_symbol) && !empty($sort_col)) {
     $sort_col = str_replace("excl_", "", $sort_col);
   }
 

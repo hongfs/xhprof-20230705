@@ -1055,6 +1055,18 @@ function symbol_report($url_params,
   global $base_path;
   global $base_url;
 
+  if(!isset($symbol_info["ct"])) {
+    $symbol_info["ct"] = 0;
+  }
+
+  if(!isset($format_cbk["ct"])) {
+    $format_cbk["ct"] = null;
+  }
+
+  if(!isset($totals["ct"])) {
+    $totals["ct"] = null;
+  }
+
   $possible_metrics = xhprof_get_possible_metrics();
 
   if ($diff_mode) {

@@ -739,7 +739,7 @@ function print_flat_data($url_params, $title, $flat_data, $sort, $run1, $run2, $
 
   foreach ($stats as $stat) {
     $desc = stat_description($stat);
-    if (array_key_exists($stat, $sortable_columns)) {
+    if (!empty($stat) && !empty($sortable_columns) && array_key_exists($stat, $sortable_columns)) {
       $href = "$base_url?"
               . http_build_query(xhprof_array_set($url_params, 'sort', $stat));
       $header = xhprof_render_link($desc, $href);
@@ -899,7 +899,7 @@ function full_report($url_params, $symbol_tab, $sort, $run1, $run2) {
     $limit = 100;  // display only limited number of rows
   }
 
-  var_dump($description);
+  var_dump($descriptions);
 
   $desc = str_replace("<br>", " ", $descriptions[$sort_col] ?? '');
 

@@ -947,16 +947,16 @@ function pc_info($info, $base_ct, $base_info, $parent) {
   if ($display_calls) {
     $mouseoverct = get_tooltip_attributes($type, "ct");
     /* call count */
-    print_td_num($info["ct"], $format_cbk["ct"], ($sort_col == "ct"), $mouseoverct);
-    print_td_pct($info["ct"], $base_ct, ($sort_col == "ct"), $mouseoverct);
+    print_td_num($info["ct"]??0, $format_cbk["ct"]??null, ($sort_col == "ct"), $mouseoverct);
+    print_td_pct($info["ct"]??0, $base_ct, ($sort_col == "ct"), $mouseoverct);
   }
 
   /* Inclusive metric values  */
   foreach ($metrics as $metric) {
-    print_td_num($info[$metric], $format_cbk[$metric],
+    print_td_num($info[$metric]??0, $format_cbk[$metric]??null,
                  ($sort_col == $metric),
                  get_tooltip_attributes($type, $metric));
-    print_td_pct($info[$metric], $base_info[$metric], ($sort_col == $metric),
+    print_td_pct($info[$metric]??0, $base_info[$metric]??null, ($sort_col == $metric),
                  get_tooltip_attributes($type, $metric));
   }
 }
@@ -967,10 +967,10 @@ function print_pc_array($url_params, $results, $base_ct, $base_info, $parent,
 
   // Construct section title
   if ($parent) {
-    $title = 'Parent function';
+    $title = '父级函数';
   }
   else {
-    $title = 'Child function';
+    $title = '下级函数';
   }
   if (count($results) > 1) {
     $title .= 's';
@@ -1187,7 +1187,7 @@ function symbol_report($url_params,
   print("</tr>");
 
   print("<tr bgcolor='#e0e0ff'><td>");
-  print("<b><i><center>Current Function</center></i></b>");
+  print("<b><i><center>当前函数</center></i></b>");
   print("</td></tr>");
 
   print("<tr>");
@@ -1204,8 +1204,8 @@ function symbol_report($url_params,
 
   // Inclusive Metrics for current function
   foreach ($metrics as $metric) {
-    print_td_num($symbol_info[$metric], $format_cbk[$metric], ($sort_col == $metric));
-    print_td_pct($symbol_info[$metric], $totals[$metric], ($sort_col == $metric));
+    print_td_num($symbol_info[$metric]??0, $format_cbk[$metric]??null, ($sort_col == $metric));
+    print_td_pct($symbol_info[$metric]??0, $totals[$metric]??null, ($sort_col == $metric));
   }
   print("</tr>");
 
@@ -1221,10 +1221,10 @@ function symbol_report($url_params,
 
   // Exclusive Metrics for current function
   foreach ($metrics as $metric) {
-    print_td_num($symbol_info["excl_" . $metric], $format_cbk["excl_" . $metric],
+    print_td_num($symbol_info["excl_" . $metric]??0, $format_cbk["excl_" . $metric]??null,
                  ($sort_col == $metric),
                  get_tooltip_attributes("Child", $metric));
-    print_td_pct($symbol_info["excl_" . $metric], $symbol_info[$metric],
+    print_td_pct($symbol_info["excl_" . $metric]??0, $symbol_info[$metric]??null,
                  ($sort_col == $metric),
                  get_tooltip_attributes("Child", $metric));
   }

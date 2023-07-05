@@ -434,9 +434,9 @@ function stat_description($stat) {
     "ct" =>  "调用次数",
     "Calls%" => "占比",
 
-    "wt" => "执行时间<br>(包括下级)<br>(微秒)",
+    "wt" => "执行时间<br>(包括下级)<br>(毫秒)",
     "IWall%" => "占比",
-    "excl_wt" => "执行时间<br>(微秒)",
+    "excl_wt" => "执行时间<br>(毫秒)",
     "EWall%" => "占比",
 
     "ut" => "Incl. User<br>(microsecs)",
@@ -444,24 +444,24 @@ function stat_description($stat) {
     "excl_ut" => "Excl. User<br>(microsec)",
     "EUser%" => "EUser%",
 
-    "st" => "Incl. Sys <br>(微秒)",
+    "st" => "Incl. Sys <br>(毫秒)",
     "ISys%" => "占比",
-    "excl_st" => "Excl. Sys <br>(微秒)",
+    "excl_st" => "Excl. Sys <br>(毫秒)",
     "ESys%" => "占比",
 
-    "cpu" => "CPU时间<br>(包括下级)<br>(微秒)",
+    "cpu" => "CPU时间<br>(包括下级)<br>(毫秒)",
     "ICpu%" => "占比",
-    "excl_cpu" => "CPU时间<br>(微秒)",
+    "excl_cpu" => "CPU时间<br>(毫秒)",
     "ECpu%" => "占比",
 
-    "mu" => "内存<br>(包括下级)<br>(bytes)",
+    "mu" => "内存<br>(包括下级)<br>(KB)",
     "IMUse%" => "占比",
-    "excl_mu" => "内存<br>(bytes)",
+    "excl_mu" => "内存<br>(KB)",
     "EMUse%" => "占比",
 
-    "pmu" => "最高内存<br>(包括下级)<br>(bytes)",
+    "pmu" => "最高内存<br>(包括下级)<br>(KB)",
     "IPMUse%" => "占比",
-    "excl_pmu" => "最高内存<br>(bytes)",
+    "excl_pmu" => "最高内存<br>(KB)",
     "EPMUse%" => "占比",
 
     "samples" => "Incl. Samples",
@@ -698,6 +698,18 @@ function print_td_pct($numer, $denom, $bold=false, $attributes=null) {
  */
 function print_function_info($url_params, $info, $sort, $run1, $run2) {
   static $odd_even = 0;
+
+  foreach(['mu', 'excl_mu', 'pmu', 'excl_pmu'] as $info_key) {
+    if(isset($info[$info_key])) {
+      $info[$info_key] = bcdiv($info[$info_key], 1024, 1);
+    }
+  }
+
+  foreach(['wt', 'excl_wt', 'st', 'excl_st', 'cpu', 'excl_cpu'] as $info_key) {
+    if(isset($info[$info_key])) {
+      $info[$info_key] = bcdiv($info[$info_key], 1000, 1);
+    }
+  }
 
   global $totals;
   global $sort_col;

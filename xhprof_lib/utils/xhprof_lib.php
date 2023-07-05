@@ -60,7 +60,7 @@ function init_metrics($xhprof_data, $rep_symbol, $sort, $diff_report = false) {
 
   $diff_mode = $diff_report;
 
-  if (!empty($sort)) {
+  if (!empty($sort) && !empty($sortable_columns)) {
     if (array_key_exists($sort, $sortable_columns)) {
       $sort_col = $sort;
     } else {

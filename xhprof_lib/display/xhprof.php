@@ -425,11 +425,56 @@ function stat_description($stat) {
   global $diff_descriptions;
   global $diff_mode;
 
-  if ($diff_mode) {
+  if($diff_mode) {
     return $diff_descriptions[$stat] ?? '';
-  } else {
-    return $descriptions[$stat] ?? '';
   }
+
+  $descriptions = [
+    "fn" => "函数名称",
+    "ct" =>  "调用次数",
+    "Calls%" => "占比",
+
+    "wt" => "执行时间<br>(包括下级)<br>(微秒)",
+    "IWall%" => "占比",
+    "excl_wt" => "执行时间<br>(微秒)",
+    "EWall%" => "占比",
+
+    "ut" => "Incl. User<br>(microsecs)",
+    "IUser%" => "IUser%",
+    "excl_ut" => "Excl. User<br>(microsec)",
+    "EUser%" => "EUser%",
+
+    "st" => "Incl. Sys <br>(微秒)",
+    "ISys%" => "占比",
+    "excl_st" => "Excl. Sys <br>(微秒)",
+    "ESys%" => "占比",
+
+    "cpu" => "CPU时间<br>(包括下级)<br>(微秒)",
+    "ICpu%" => "占比",
+    "excl_cpu" => "CPU时间<br>(微秒)",
+    "ECpu%" => "占比",
+
+    "mu" => "内存<br>(包括下级)<br>(bytes)",
+    "IMUse%" => "占比",
+    "excl_mu" => "内存<br>(bytes)",
+    "EMUse%" => "占比",
+
+    "pmu" => "最高内存<br>(包括下级)<br>(bytes)",
+    "IPMUse%" => "占比",
+    "excl_pmu" => "最高内存<br>(bytes)",
+    "EPMUse%" => "占比",
+
+    "samples" => "Incl. Samples",
+    "ISamples%" => "ISamples%",
+    "excl_samples" => "Excl. Samples",
+    "ESamples%" => "ESamples%",
+  ];
+
+  if(!empty($descriptions)) {
+    return $descriptions[$stat];
+  }
+
+  return '';
 }
 
 
@@ -538,8 +583,6 @@ function profiler_report ($url_params,
                 $run1_txt . '<br><b>vs.</b><br>' . $run2_txt :
                 $run1_txt) .
     '  </dd>' .
-    '  <dt>Tip</dt>' .
-    '  <dd>Click a function name below to drill down.</dd>' .
     '</dl>' .
     '<div style="clear: both; margin: 3em 0em;"></div>';
 
@@ -734,7 +777,7 @@ function print_flat_data($url_params, $title, $flat_data, $sort, $run1, $run2, $
   print("<h3 align=center>$title $display_link</h3><br>");
 
   print('<table border=1 cellpadding=2 cellspacing=1 width="90%" '
-        .'rules=rows bordercolor="#bdc7d8" align=center>');
+        .'rules=rows bordercolor="#bdc7d8" border="1" align=center>');
   print('<tr bgcolor="#bdc7d8" align=right>');
 
   foreach ($stats as $stat) {
@@ -749,7 +792,7 @@ function print_flat_data($url_params, $title, $flat_data, $sort, $run1, $run2, $
 
     if ($stat == "fn")
       print("<th align=left><nobr>$header</th>");
-    else print("<th " . $vwbar . "><nobr>$header</th>");
+    else print("<th align=\"center\" " . $vwbar . "><nobr>$header</th>");
   }
   print("</tr>\n");
 
@@ -821,7 +864,7 @@ function full_report($url_params, $symbol_tab, $sort, $run1, $run2) {
 
     if ($display_calls) {
       print('<tr>');
-      print("<td>Number of Function Calls</td>");
+      print("<td>函数总调用次数</td>");
       print_td_num($totals_1["ct"], $format_cbk["ct"]);
       print_td_num($totals_2["ct"], $format_cbk["ct"]);
       print_td_num($totals_2["ct"] - $totals_1["ct"], $format_cbk["ct"], true);
@@ -849,13 +892,12 @@ function full_report($url_params, $symbol_tab, $sort, $run1, $run2) {
     print('<table cellpadding=2 cellspacing=1 width="30%" '
           .'bgcolor="#bdc7d8" align=center>' . "\n");
     echo "<tr>";
-    echo "<th style='text-align:right'>Overall Summary</th>";
     echo "<th></th>";
     echo "</tr>";
 
     foreach ($metrics as $metric) {
       echo "<tr>";
-      echo "<td style='text-align:right; font-weight:bold'>Total "
+      echo "<td style='text-align:right; font-weight:bold'>"
             . str_replace("<br>", " ", stat_description($metric)) . ":</td>";
       echo "<td>" . number_format($totals[$metric]) .  " "
            . $possible_metrics[$metric][1] . "</td>";
@@ -864,7 +906,7 @@ function full_report($url_params, $symbol_tab, $sort, $run1, $run2) {
 
     if ($display_calls) {
       echo "<tr>";
-      echo "<td style='text-align:right; font-weight:bold'>Number of Function Calls:</td>";
+      echo "<td style='text-align:right; font-weight:bold'>函数总调用次数:</td>";
       echo "<td>" . number_format($totals['ct']) . "</td>";
       echo "</tr>";
     }
@@ -872,7 +914,7 @@ function full_report($url_params, $symbol_tab, $sort, $run1, $run2) {
     echo "</table>";
     print("</center></p>\n");
 
-    $callgraph_report_title = '[View Full Callgraph]';
+    $callgraph_report_title = '[查询函数调用图]';
   }
 
   print("<center><br><h3>" .
@@ -1100,7 +1142,7 @@ function symbol_report($url_params,
     print('<tr>');
 
     if ($display_calls) {
-      print("<td>Number of Function Calls</td>");
+      print("<td>函数总调用次数</td>");
       print_td_num($symbol_info1["ct"], $format_cbk["ct"]);
       print_td_num($symbol_info2["ct"], $format_cbk["ct"]);
       print_td_num($symbol_info2["ct"] - $symbol_info1["ct"],

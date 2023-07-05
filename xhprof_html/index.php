@@ -68,7 +68,7 @@ foreach ($params as $k => $v) {
 echo "<html>";
 
 echo "<head><title>XHProf: Hierarchical Profiler Report</title>";
-xhprof_include_js_css();
+xhprof_include_js_css($xhprof_cdn ?? '');
 echo "</head>";
 
 echo "<body>";
